@@ -34,7 +34,7 @@ a.underlineNone {
 @media only screen and (max-width: 992px) {
   .header-half-demo::before {
     content: '';
-    background: #15232E;
+    background: #304CFD;
     height: 50vh;
     position: absolute;
     bottom: 0;
@@ -82,7 +82,7 @@ a.underlineNone {
 }
 @media only screen and (max-width: 580px) {
   .header-half-demo__right {
-    background: #15232E;
+    background: #304CFD;
     padding-top: 1.3rem;
   }
 }
@@ -146,7 +146,7 @@ a.underlineNone {
 .slideOpen {
   background: linear-gradient(to right, #0081ff 0%, #0045ff 100%);
   border-radius: 50%;
-  box-shadow: 0 10px 15px rgba(0, 69, 255, 0.2);
+  box-shadow: 0 10px 15px rgba(48, 76, 253, 0.2);
   bottom: 2rem;
   left: 2rem;
   width: 48px;
@@ -157,7 +157,7 @@ a.underlineNone {
   z-index: 1004;
 }
 .slideOpen::before {
-  background-image: url("../demo/iconSideMenu.svg");
+  background-image: url("iconSideMenu.svg");
   background-position: center;
   background-size: 36%;
   content: '';
@@ -172,7 +172,7 @@ a.underlineNone {
 }
 
 .slideClose {
-  background-image: url("../demo/iconClose.svg");
+  background-image: url("iconClose.svg");
   top: 1.5rem;
   left: 400px;
   width: 30px;
@@ -216,7 +216,6 @@ a.underlineNone {
   border-bottom: 0;
 }
 .slideNav__item .title {
-  color: #15232E;
   margin-bottom: .8rem;
 }
 .slideNav__item a {
@@ -224,7 +223,7 @@ a.underlineNone {
   text-decoration: none;
 }
 .slideNav__item a:hover {
-  color: #0045FF;
+  color: #304CFD;
 }
 
 .overlay-slideNav {
@@ -244,12 +243,12 @@ a.underlineNone {
   justify-content: space-between;
 }
 .rtl-mode a {
-  color: #0045FF;
+  color: #304CFD;
   letter-spacing: .1rem;
 }
 
 .lable-new {
-  background-color: #0045FF;
+  background-color: #304CFD;
   border-radius: 20px;
   color: #fff;
   font-size: .7rem;
