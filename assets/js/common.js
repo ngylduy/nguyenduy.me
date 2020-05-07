@@ -1,7 +1,7 @@
 /*
  * Author: Nguyen Xuan Phu
- * Template Name: vCard 2
- * Version: 1.0.0
+ * Template Name: vCard
+ * Version: 1.0.2
 */
 
 $(document).ready(function() {
@@ -78,56 +78,110 @@ $(document).ready(function() {
 	
 	
     /*-----------------------------------------------------------------
+      Nav
+    -------------------------------------------------------------------*/
+  
+    var $sideNavOpen = $('.hamburger');
+    var tl = new TimelineMax({paused:true, reversed:true});
+
+    if (window.matchMedia("(max-width: 580px)").matches) {
+        $('.js-menu').each(function(i) {
+            tl.timeScale(1);
+            tl.fromTo('.nav', 1.0, {
+			    width: '0',
+				opacity: 0,
+				force3D:true
+            }, {
+			    width: '100%',
+				opacity: 1,
+			    ease: Back.easeOut
+		    })
+            .staggerFrom('.nav__item', 0.2, {
+                opacity: 0,
+                x: 70,
+                ease: Back.easeOut
+            },0.06, '-=0.5');
+        }); 
+    } else {
+        $('.js-menu').each(function(i) {
+            tl.timeScale(1);
+            tl.fromTo('.nav', 1.0, {
+			    width: '0'
+            }, {
+			    width: '100%',
+			    ease: 'Bounce.easeOut'
+		    })
+            .staggerFrom('.nav__item', 0.2, {
+                opacity: 0,
+                x: 70,
+                ease: Back.easeOut
+            },0.06, '-=0.25');
+        });  
+    }
+  
+    $sideNavOpen.on('click', function() {
+        tl.reversed() ? tl.play() : tl.reverse();	
+    });
+
+	
+    /*-----------------------------------------------------------------
       Carousel
     -------------------------------------------------------------------*/	
     
 	// Testimonials
-	$('body').imagesLoaded({ background: !0 }).always( function( instance ) {
-	    $('.js-carousel-review').each(function() {
-		    var carousel = new Swiper('.js-carousel-review', {
-                slidesPerView: 1,
-			    spaceBetween: 30,
-			    //loop: true,
-			    grabCursor: true,
-			    watchOverflow: true,
-                pagination: {
-                    el: '.swiper-pagination',
-		            clickable: true
+	$('.js-carousel-review').each(function() {
+		var carousel = new Swiper('.js-carousel-review', {
+            slidesPerView: 2,
+			spaceBetween: 30,
+			speed: 300,
+			grabCursor: true,
+			watchOverflow: true,
+            pagination: {
+                el: '.swiper-pagination',
+		        clickable: true
+            },
+			autoplay: {
+                delay: 5000,
+            },
+			breakpoints: {
+                580: {
+					slidesPerView: 1,
+                    spaceBetween: 20
                 },
-			    autoplay: {
-                    delay: 5000
+                991: {
+                    slidesPerView: 1
                 }
-            });
+            }
 		});
-
-	    // Clients
-	    $('.js-carousel-clients').each(function() {
-		    var carousel = new Swiper('.js-carousel-clients', {
-                slidesPerView: 4,
-			    spaceBetween: 30,
-			    //loop: true,
-			    grabCursor: true,
-			    watchOverflow: true,
-                pagination: {
-                    el: '.swiper-pagination',
-		            clickable: true
-                },
-			    breakpoints: {
-                    320: {
-                        slidesPerView: 1,
-                        spaceBetween: 0
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 30
-                    },
-                    991: {
-                        slidesPerView: 3,
-                        spaceBetween: 30
-                    }
+	});
+	
+	// Clients
+	$('.js-carousel-clients').each(function() {
+		var carousel = new Swiper('.js-carousel-clients', {
+            slidesPerView: 4,
+			spaceBetween: 30,
+			//loop: true,
+			grabCursor: true,
+			watchOverflow: true,
+            pagination: {
+                el: '.swiper-pagination',
+		        clickable: true
+            },
+			breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 0
+                },				
+                580: {
+                    slidesPerView: 2,
+                    spaceBetween: 30
+                },				
+                991: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
                 }
-		    });
-	    });
+            }
+		});
 	});
 	
 	
@@ -158,7 +212,7 @@ $(document).ready(function() {
     //  stop sticky kit
     //  based on your window width
 
-    var screen = 992;
+    var screen = 1200;
 
     var windowHeight, windowWidth;
     windowWidth = $(window).width();
@@ -226,6 +280,22 @@ $(document).ready(function() {
 	
 	
     /*-----------------------------------------------------------------
+      Scroll indicator
+    -------------------------------------------------------------------*/
+  
+    function scrollIndicator() {
+        $(window).on('scroll', function() {
+            var wintop = $(window).scrollTop(), docheight = 
+            $(document).height(), winheight = $(window).height();
+ 	        var scrolled = (wintop/(docheight-winheight))*100;
+  	        $('.scroll-line').css('width', (scrolled + '%'));
+        });
+    }
+	
+	scrollIndicator(); //Init
+	
+	
+    /*-----------------------------------------------------------------
       ScrollTo
     -------------------------------------------------------------------*/
 	
@@ -274,12 +344,6 @@ $(document).ready(function() {
 
 
     /*-----------------------------------------------------------------
-      Equal heights
-    -------------------------------------------------------------------*/
-
-    $('.case-item').matchHeight();
-
-    /*-----------------------------------------------------------------
       Tooltip
     -------------------------------------------------------------------*/
 	
@@ -321,8 +385,9 @@ $(document).ready(function() {
     -------------------------------------------------------------------*/	
 	
     // Portfolio
-    var $portfolioMasonry = $('.js-grid').isotope({
+    var $portfolioMasonry = $('.js-masonry').isotope({
         itemSelector: '.gallery-grid__item',
+	    layoutMode: 'fitRows',
         percentPosition: true,
 	    transitionDuration: '0.5s',
         hiddenStyle: {
@@ -333,6 +398,9 @@ $(document).ready(function() {
             opacity: 1,
             transform: 'scale(1)'
         },
+        fitRows: {
+            gutter: '.gutter-sizer'
+        },	
         masonry: {
 	        columnWidth: '.gallery-grid__item',
             gutter: '.gutter-sizer',
@@ -344,7 +412,11 @@ $(document).ready(function() {
         $portfolioMasonry.isotope ({
 	        columnWidth: '.gallery-grid__item',
             gutter: '.gutter-sizer',
-            isAnimated: true
+            isAnimated: true,
+	        layoutMode: 'fitRows',
+            fitRows: {
+                gutter: '.gutter-sizer'
+            }
 	    });
     });	
 
@@ -353,43 +425,9 @@ $(document).ready(function() {
       niceScroll
     -------------------------------------------------------------------*/		
 
-    $('.js-scroll').niceScroll({
-		cursorcolor: "#F0F0F6",
-		cursorborder: "none",
-		cursoropacitymin: 1,
-		horizrailenabled:false,
-		scrollspeed: 86, // scrolling speed
-        railpadding: { top: 0, right: 5, left: 0, bottom: 0 }
-	});
-
-	
-    $('.js-scrol-textarea').niceScroll({
-		cursorcolor: "#8697A8",
-		cursorborder: "none",
-		railpadding: { top: 0, right: 3, left: 0, bottom: 0 },
+    $('textarea').niceScroll({
 		horizrailenabled:false
 	});
-	
-	
-    /*-----------------------------------------------------------------
-      hover effect button
-    -------------------------------------------------------------------*/	
-	
-    $(function() {
-		$('.btn').append('<span></span>');
-		
-        $('.btn').on('mouseenter', function(e) {
-			var parentOffset = $(this).offset(),
-      		relX = e.pageX - parentOffset.left,
-      		relY = e.pageY - parentOffset.top;
-			$(this).find('span').css({top:relY, left:relX})
-        }).on('mouseout', function(e) {
-			var parentOffset = $(this).offset(),
-      		relX = e.pageX - parentOffset.left,
-      		relY = e.pageY - parentOffset.top;
-    	    $(this).find('span').css({top:relY, left:relX})
-        });
-    });
 
 
     /*-----------------------------------------------------------------
